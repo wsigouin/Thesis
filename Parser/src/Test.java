@@ -11,11 +11,12 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by wills on 2017-02-22.
+ * TESTING CLASS; NOT PART OF OVERALL PROJECT
+ * CAN BE IGNORED
  */
 public class Test {
     public static void main (String[] args) throws ParseException {
-        //getLinkAge("www.google.com");
+
     }
 
 }

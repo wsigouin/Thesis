@@ -3,8 +3,8 @@ import java.io.FileNotFoundException;
 import java.io.*;
 import java.util.*;
 /**
- * Created by wills on 2017-02-25.
- */
+ * Class used to split MBOX files for processing individual emails
+  */
 public class SplitFiles {
     public static void main (String[] args) throws FileNotFoundException{
         File mbox = new File("emails/mbox/phishing3.mbox");
@@ -13,16 +13,7 @@ public class SplitFiles {
         int i = 0;
         String line = in.nextLine();
         String outString = "";
-  /*
-        while(in.hasNextLine()){
-            line = in.nextLine();
-            if(line.matches("^From .*")){
-                System.out.println(line);
-                i++;
-            }
-        }
-        System.out.println(i);
-      */
+
         while(in.hasNext()){
             System.out.println(i + " emails processed");
             File outFile = new File("emails/phishing2/phishing" + i + ".txt");
