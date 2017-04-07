@@ -9,7 +9,9 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 /**
- * Created by wills on 2017-03-14.
+ * Creates Trainging and testing data for the NN to directly use
+ * random seleciton of emails, created several times in order to do several trials
+ * data is normalized based on the set
  */
 
 public class CreateTrainAndTest {
@@ -24,7 +26,8 @@ public class CreateTrainAndTest {
     static double maxDomains = 0;
 
     public static void main (String[] args) throws FileNotFoundException{
-        double[] testParams = {1000,50};
+		//size and distribution of dataset, legacy, it is not fixed
+        double[] testParams = {4000,50};
 
         double[][] tests = {
                 testParams,
@@ -50,7 +53,7 @@ public class CreateTrainAndTest {
         ArrayList<double[]> phish = new ArrayList<>();
         ArrayList<double[]> legit = new ArrayList<>();
 
-
+		//create list for each email type
         String line;
         Scanner in = new Scanner(pone);
         int lineCount = 1;
@@ -79,7 +82,7 @@ public class CreateTrainAndTest {
         int set = 1;
         for( double[] test : tests) {
 
-
+			//training set
             double OverallSize = test[0];
             double size = OverallSize;
             double percentPhishing = test[1];
@@ -114,6 +117,7 @@ public class CreateTrainAndTest {
             }
             out.close();
 
+			//verification set
             out = new PrintWriter("emails/test/out/" + (int)OverallSize + "_" + (int)percentPhishing + "_" + set + "_validate.data");
             out.write("2000 " + NUM_INPUTS + " 1\n");
             outEmails = new ArrayList<>();
@@ -144,7 +148,8 @@ public class CreateTrainAndTest {
                 out.write(infoArrayToString(datum, minCharacters, maxCharacters, minLinks, maxLinks, minDots, maxDots, minDomains, maxDomains));
             }
             out.close();
-
+			
+			//testing set
             out = new PrintWriter("emails/test/out/" + (int)OverallSize + "_" + (int)percentPhishing + "_" + set++ +"_test.data");
             out.write("2000 " + NUM_INPUTS + " 1\n");
             outEmails = new ArrayList<>();
@@ -181,7 +186,8 @@ public class CreateTrainAndTest {
 
 
     }
-
+	
+	//convert email into a readable array
     public static double[] convertEmail(String line){
         StringTokenizer st = new StringTokenizer(line, " ");
         double[] out = new double[st.countTokens()];
@@ -192,7 +198,8 @@ public class CreateTrainAndTest {
         return out;
 
     }
-
+	
+	//create output string from email data to place in data file
     public static String infoArrayToString(double[] datum, double minLines, double maxLines, double minLinks, double maxLinks, double minDots, double maxDots, double minDomains, double maxDomains){
         DecimalFormat format = new DecimalFormat("0.0000000000");
         return format.format((datum[0]-minLines)/(maxLines-minLines)) + " " +
@@ -202,7 +209,8 @@ public class CreateTrainAndTest {
                 datum[4] + " " + datum[5] + " " + datum[6] + " " + datum[7] + " " + datum[8] + " " + datum[9] +  " " + datum[10] + " " + datum[11] + " " + datum[12] + " " + datum[13]+ " " + datum[14] +"\n"
                 + datum[15] + "\n";
     }
-
+	
+	//add item to overall array
     public static void addItem(ArrayList<double[]> source, ArrayList<double[]> destination, int selection){
         destination.add(source.get(selection));
         double[] currEmailData = source.get(selection);
